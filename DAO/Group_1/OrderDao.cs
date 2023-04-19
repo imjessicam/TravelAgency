@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DTO.Models.Group_2.OfferCustomer;
+using DTO.Models.Group_2.Order;
+using TravelAgency.Models.Group_2;
 using TravelAgency.Repositories.Group_1;
 using TravelAgency.Repositories.Group_2;
 
@@ -65,11 +67,23 @@ namespace DAO.Group_1
             return _mapper.Map<IReadOnlyList<OrderDetails>>(orders);
         }
 
+        public OrderAllInfo GetAllInfo (Guid orderExternalId)
+        {
+            var order = _orderRepository.GetAllInfo(orderExternalId);
+
+            return _mapper.Map<OrderAllInfo>(order);
+        }
+
         // Put
 
         public Guid Update(UpdateOrderModel orderToUpdate)
         {
+            var customer = _customerRepository.Find(orderToUpdate.CustomerExternalId);
+            var offer = _offerRepository.Find(orderToUpdate.OfferExternalId);
+
             var order = _mapper.Map<TravelAgency.Models.Group_2.Order>(orderToUpdate);
+            order.CustomerId = customer.Id;
+            order.OfferId = offer.Id;
                 
             return _orderRepository.Update(order);
 

@@ -1,5 +1,6 @@
 ﻿using DAO.Group_1;
 using DTO.Models.Group_2.OfferCustomer;
+using DTO.Models.Group_2.Order;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPITravelAgency.Controllers.Group_2
@@ -40,6 +41,14 @@ namespace WebAPITravelAgency.Controllers.Group_2
         public IActionResult Find(Guid orderExternalId)
         {
             var foundItem = _orderDao.Find(orderExternalId);
+            return Ok(foundItem);
+        }
+
+        [HttpGet]
+        [Route("getAllInfo")]
+        public IActionResult GetAllInfo(Guid orderExternalId)
+        {
+            var foundItem = _orderDao.GetAllInfo(orderExternalId);
             return Ok(foundItem);
         }
 

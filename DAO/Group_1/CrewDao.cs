@@ -48,10 +48,10 @@ namespace DAO.Group_1
         {
             var foundCustomer = _crewRepository.GetCustomer(externalId);
 
-            var foundCrewMmeber = _crewRepository.Find(externalId);
-            foundCrewMmeber.CustomerId = foundCustomer.Id;
+            var foundCrewMemeber = _crewRepository.Find(externalId);
+            foundCrewMemeber.CustomerId = foundCustomer.Id;
 
-            return _mapper.Map<CrewDetails>(foundCrewMmeber);
+            return _mapper.Map<CrewDetails>(foundCrewMemeber);
         }
 
         // Put
@@ -59,6 +59,10 @@ namespace DAO.Group_1
         {
             // Mapping
             var crewMember = _mapper.Map<TravelAgency.Models.Group_2.Crew>(crewToUpdate);
+
+            var customer = _customerRepository.Find(crewToUpdate.CustomerExternalId);
+
+            crewMember.CustomerId = customer.Id;
 
             //// Check if item exists
             //var isExist = _fleetExist.IsExist(fleetToUpdate.ExternalId);

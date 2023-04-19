@@ -16,7 +16,7 @@ namespace DAO.MappingProfiles
             CreateMap<CreateCrewModel, TravelAgency.Models.Group_2.Crew>();
 
             // Update
-            CreateMap<UpdateCrewModel, TravelAgency.Models.Group_2.Crew>();
+            CreateMap<UpdateCrewModel, TravelAgency.Models.Group_2.Crew>().ForMember(destination => destination.ExternalId, options => options.MapFrom(source => source.CrewExternalId));
         }
 
     }

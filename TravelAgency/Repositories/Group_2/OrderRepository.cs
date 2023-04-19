@@ -29,11 +29,13 @@ namespace TravelAgency.Repositories.Group_2
 
         // Full info about order
 
-        public void GetAllInfo(Guid orderExternalId)
+        public Order GetAllInfo(Guid orderExternalId)
         {
             using var context = _factory.CreateDbContext();
 
-            var orderInfo = context.Orders.FirstOrDefault(o => o.ExternalId == orderExternalId);
+            var orderInfo = context.Orders.Include(x=> x.Customer).Include(x => x.Offer).ThenInclude(x => x.Fleet).FirstOrDefault(o => o.ExternalId == orderExternalId);
+
+            return orderInfo;
         }
 
         public Guid Create(Order order)
@@ -42,7 +44,6 @@ namespace TravelAgency.Repositories.Group_2
 
             var externalId = Guid.NewGuid();
             order.ExternalId = externalId;
-
             
             context.Orders.Add(order);
             context.SaveChanges();
@@ -54,9 +55,9 @@ namespace TravelAgency.Repositories.Group_2
         {
             using var context = _factory.CreateDbContext();
 
-            var foundOrder = context.Orders.FirstOrDefault(o => o.ExternalId == orderExternalId);
+            return context.Orders.FirstOrDefault(o => o.ExternalId == orderExternalId);
                        
-            return foundOrder;
+            
         }
 
         public Guid Update(Order order)

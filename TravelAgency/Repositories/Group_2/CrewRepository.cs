@@ -109,7 +109,9 @@ namespace TravelAgency.Repositories.Group_2
                 .Include(x => x.Customer)
                 .FirstOrDefault(x => x.ExternalId == crewMemberExternalId);
 
-            return crew.Customer;
+            var customer = crew.Customer;
+
+            return customer;
         }
 
 
