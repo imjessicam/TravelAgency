@@ -60,13 +60,13 @@ namespace WebAPITravelAgency.Controllers.Group_2
             return Ok(_orderDao.Update(orderToUpdate));
         }
 
-        // Delete
-        [HttpDelete]
-        [Route("delete")]
-        public IActionResult Delete(Guid orderExternalId)
-        {
-            _orderDao.Delete(orderExternalId);
-            return Ok();
-        }
+        //// Delete
+        //[HttpDelete]
+        //[Route("delete")]
+        //public IActionResult Delete(Guid orderExternalId)
+        //{
+        //    _orderDao.Delete(orderExternalId);
+        //    return Ok();
+        //}
     }
 }
