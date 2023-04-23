@@ -2,6 +2,8 @@
 using DTO.Models.Group_1.Customer;
 using DTO.Models.Group_1.Fleet;
 using DTO.Models.Group_1.Skipper;
+using DTO.Models.Group_2.Crew;
+using DTO.Models.Group_2.OfferCustomer;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Models.Group_1;
@@ -141,6 +143,71 @@ namespace TravelAgency.Validators
         }
 
         // Crew
+        public bool IsValid(CreateCrewModel crewMember)
+        {
+            using var context = _factory.CreateDbContext();
 
+            var lastName = context.Crews.FirstOrDefault(x => x.LastName == crewMember.LastName);
+            var firstName = context.Crews.FirstOrDefault(x => x.FirstName == crewMember.FirstName);
+
+            if (lastName != null && firstName != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool IsValid(UpdateCrewModel crewMember)
+        {
+            using var context = _factory.CreateDbContext();
+
+            var lastName = context.Crews.FirstOrDefault(x => x.LastName == crewMember.LastName);
+            var firstName = context.Crews.FirstOrDefault(x => x.FirstName == crewMember.FirstName);
+
+            if (lastName != null && firstName != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        // Order
+        public bool IsValid(CreateOrderModel order)
+        {
+            using var context = _factory.CreateDbContext();
+
+            // OfferId
+            var foundOffer = context.Offers.FirstOrDefault(x => x.ExternalId == order.OfferExternalId);
+            var offerId = context.Orders.FirstOrDefault(x => x.OfferId == foundOffer.Id);
+
+            // CustomerId
+            var foundCustomer = context.Customers.FirstOrDefault(x => x.ExternalId == order.CustomerExternalId);
+            var customerId = context.Orders.FirstOrDefault(x => x.CustomerId == foundCustomer.Id);
+
+            if (offerId != null && customerId != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool IsValid(UpdateOrderModel order)
+        {
+            using var context = _factory.CreateDbContext();
+
+            // OfferId
+            var foundOffer = context.Offers.FirstOrDefault(x => x.ExternalId == order.OfferExternalId);
+            var offerId = context.Orders.FirstOrDefault(x => x.OfferId == foundOffer.Id);
+
+            // CustomerId
+            var foundCustomer = context.Customers.FirstOrDefault(x => x.ExternalId == order.CustomerExternalId);
+            var customerId = context.Orders.FirstOrDefault(x => x.CustomerId == foundCustomer.Id);
+
+            if (offerId != null && customerId != null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

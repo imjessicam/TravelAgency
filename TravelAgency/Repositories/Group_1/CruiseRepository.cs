@@ -14,18 +14,7 @@ namespace TravelAgency.Repositories.Group_1
         public CruiseRepository(IDbContextFactory<DatabaseContext> factory)
         {
             _factory = factory;
-        }
-
-        // List of all cruisers
-
-        public IReadOnlyList<Cruise> GetAll()
-        {
-            using var context = _factory.CreateDbContext();
-
-            var cruisesList = context.Cruises.ToList();
-
-            return cruisesList;
-        }
+        }        
 
         // Post
         public Guid Create(Cruise cruise)
@@ -50,6 +39,16 @@ namespace TravelAgency.Repositories.Group_1
             var foundItem = database.FirstOrDefault(x => x.ExternalId == externalId);
 
             return foundItem;
+        }
+
+        // Get | List of all cruisers
+        public IReadOnlyList<Cruise> GetAll()
+        {
+            using var context = _factory.CreateDbContext();
+
+            var cruisesList = context.Cruises.ToList();
+
+            return cruisesList;
         }
 
         // Put

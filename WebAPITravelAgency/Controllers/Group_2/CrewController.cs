@@ -49,6 +49,15 @@ namespace WebAPITravelAgency.Controllers.Group_2
             return Ok(foundItem);
         }
 
+        [HttpGet]
+        [Route("findByLastName")]
+        public IActionResult FindByLastName([FromQuery] CrewFindByLastName crewMember)
+        {
+            var foundItem = _crewDao.FindByLastName(crewMember).ToList();
+            return Ok(foundItem);
+        }
+
+
         // Put
         [HttpPut]
         [Route("update")]

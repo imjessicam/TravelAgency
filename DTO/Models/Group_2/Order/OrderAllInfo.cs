@@ -1,4 +1,5 @@
 ﻿using DTO.Models.Group_1.Customer;
+using DTO.Models.Group_2.Crew;
 using DTO.Models.Group_2.Offer;
 
 namespace DTO.Models.Group_2.Order

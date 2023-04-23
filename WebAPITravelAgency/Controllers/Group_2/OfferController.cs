@@ -48,7 +48,7 @@ namespace WebAPITravelAgency.Controllers.Group_2
         [Route("getAllInfo")]
         public IActionResult GetAllInfo(Guid offerExternalId)
         {
-            var foundOffer = _offerRepository.GettAllInfo(offerExternalId);
+            var foundOffer = _offerDao.GetAllInfo(offerExternalId);
 
             return Ok(foundOffer);
         }

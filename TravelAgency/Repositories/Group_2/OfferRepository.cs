@@ -15,27 +15,6 @@ namespace TravelAgency.Repositories.Group_2
             _factory = factory;
         }
 
-        // List of all offers
-
-        public IReadOnlyList<Offer> GetAll()
-        {
-            using var context = _factory.CreateDbContext();
-
-            var offersList = context.Offers.ToList();
-
-            return offersList;
-        }
-
-        public Offer GettAllInfo(Guid offerExternalId)
-        {
-            using var context = _factory.CreateDbContext();
-
-            // find offer
-            var foundOffer = context.Offers.FirstOrDefault(o => o.ExternalId == offerExternalId);
-
-            return foundOffer;
-        }
-
         // Post
         public Guid Create(Offer offer)
         {
@@ -60,8 +39,32 @@ namespace TravelAgency.Repositories.Group_2
             return foundOffer;
         }
 
-        // Put
+        // Get | List of all offers
+        public IReadOnlyList<Offer> GetAll()
+        {
+            using var context = _factory.CreateDbContext();
 
+            var offersList = context.Offers.ToList();
+
+            return offersList;
+        }
+
+        // Get | All info
+        public Offer GettAllInfo(Guid offerExternalId)
+        {
+            using var context = _factory.CreateDbContext();
+
+            // find offer
+            var offerInfo = context.Offers
+                .Include(x => x.Cruise)
+                .Include(x => x.Fleet)
+                .Include(x => x.Skipper)
+                .FirstOrDefault(o => o.ExternalId == offerExternalId);
+
+            return offerInfo;
+        }
+
+        // Put
         public Guid Update(Offer offer)
         {
             using var context = _factory.CreateDbContext();
@@ -95,7 +98,7 @@ namespace TravelAgency.Repositories.Group_2
             context.SaveChanges();
         }
 
-        //
+        // GET FROM ANOTHER TABLE        
 
         public Cruise GetCruise(Guid offerExternalId)
         {

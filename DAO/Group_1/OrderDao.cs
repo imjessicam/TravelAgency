@@ -9,6 +9,7 @@ using DTO.Models.Group_2.Order;
 using TravelAgency.Models.Group_2;
 using TravelAgency.Repositories.Group_1;
 using TravelAgency.Repositories.Group_2;
+using TravelAgency.Validators.Interfaces;
 
 namespace DAO.Group_1
 {
@@ -19,13 +20,25 @@ namespace DAO.Group_1
         private readonly CustomerRepository _customerRepository;
         private readonly OfferRepository _offerRepository;
 
-        public OrderDao(OrderRepository orderRepository, IMapper mapper, CustomerRepository customerRepository, OfferRepository offerRepository)
+        // Validators
+        private readonly IOrderExist _orderExist;
+        private readonly ICustomerExist _customerExist;
+        private readonly IOfferExist _offerExist;
+        private readonly INoDuplicates _orderNoDuplicates;
+
+        public OrderDao(OrderRepository orderRepository, IMapper mapper, CustomerRepository customerRepository, OfferRepository offerRepository, IOrderExist orderExist, ICustomerExist customerExist, IOfferExist offerExist, INoDuplicates orderNoDuplicates)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
 
             _customerRepository = customerRepository;
             _offerRepository = offerRepository;
+
+            // Validators
+            _orderExist = orderExist;
+            _customerExist = customerExist;
+            _offerExist = offerExist;
+            _orderNoDuplicates = orderNoDuplicates;
         }
 
         // Post
@@ -34,8 +47,22 @@ namespace DAO.Group_1
             // Find Customer
             var customer = _customerRepository.Find(order.CustomerExternalId);
 
+            // Check if customer exists
+            var customerIsExist = _customerExist.IsExist(order.CustomerExternalId);
+            if (!customerIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Customer does not exist, please create or find another customer.", innerException: null);
+            }
+
             // Find Offer
             var offer = _offerRepository.Find(order.OfferExternalId);
+
+            // Check if offer exists
+            var offerIsExist = _offerExist.IsExist(order.OfferExternalId);
+            if (!offerIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Offer does not exist, please create or find another customer.", innerException: null);
+            }
 
             // Create new order
             var newOrder = _mapper.Map<TravelAgency.Models.Group_2.Order>(order);
@@ -43,19 +70,25 @@ namespace DAO.Group_1
             newOrder.CustomerId = customer.Id;
 
             return _orderRepository.Create(newOrder);
-
         }
 
         // Get
         public OrderDetails Find(Guid orderExternalId)
         {        
-            var foundCustomer = _orderRepository.GetCustomer(orderExternalId);
-            var foundOffer = _orderRepository.GetOffer(orderExternalId);
+            //var foundCustomer = _orderRepository.GetCustomer(orderExternalId);
+            //var foundOffer = _orderRepository.GetOffer(orderExternalId);
 
             var foundOrder = _orderRepository.Find(orderExternalId);
 
-            foundOrder.CustomerId = foundCustomer.Id;
-            foundOrder.OfferId= foundOffer.Id;
+            // Check if order exists
+            var isExist = _orderExist.IsExist(orderExternalId);
+            if (!isExist)
+            {
+                throw new ArgumentOutOfRangeException("Order does not exist, please create.", innerException: null);
+            }
+
+            //foundOrder.CustomerId = foundCustomer.Id;
+            //foundOrder.OfferId= foundOffer.Id;
 
             return _mapper.Map<OrderDetails>(foundOrder);
         }
@@ -78,8 +111,25 @@ namespace DAO.Group_1
 
         public Guid Update(UpdateOrderModel orderToUpdate)
         {
+            // Find new customer
             var customer = _customerRepository.Find(orderToUpdate.CustomerExternalId);
+
+            // Check if customer exists
+            var customerIsExist = _customerExist.IsExist(orderToUpdate.CustomerExternalId);
+            if (!customerIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Customer does not exist, please create first or find another customer.", innerException: null);
+            }
+
+            // Find new offer
             var offer = _offerRepository.Find(orderToUpdate.OfferExternalId);
+
+            // Check if offer exists
+            var offerIsExist = _offerExist.IsExist(orderToUpdate.OfferExternalId);
+            if (!offerIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Offer does not exist, please create first or find another customer.", innerException: null);
+            }
 
             var order = _mapper.Map<TravelAgency.Models.Group_2.Order>(orderToUpdate);
             order.CustomerId = customer.Id;
@@ -93,8 +143,17 @@ namespace DAO.Group_1
 
         public void Delete(Guid orderExternalId)
         {
+            // Find order to delete
             var orderToDelete = _orderRepository.Find(orderExternalId);
 
+            // Check if order exists
+            var isExist = _orderExist.IsExist(orderExternalId);
+            if (!isExist)
+            {
+                throw new ArgumentOutOfRangeException("The order you want to remove does not exist.", innerException: null);
+            }
+
+            // Delete order
             _orderRepository.Delete(orderToDelete.ExternalId);
         }
     }

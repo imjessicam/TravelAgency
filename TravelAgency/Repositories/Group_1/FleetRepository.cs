@@ -16,16 +16,6 @@ namespace TravelAgency.Repositories.Group_1
             _factory = factory;
         }
 
-        // List of all fleet
-
-        public IReadOnlyList<Fleet> GetAll()
-        {
-            using var context = _factory.CreateDbContext();
-
-            var fleetList = context.Fleets.ToList();
-
-            return fleetList;
-        }
 
         // Post
         public Guid Create(Fleet fleet)
@@ -50,6 +40,16 @@ namespace TravelAgency.Repositories.Group_1
             var foundItem = database.FirstOrDefault(x => x.ExternalId == externalId);
 
             return foundItem;
+        }
+
+        // Get | List of all fleet
+        public IReadOnlyList<Fleet> GetAll()
+        {
+            using var context = _factory.CreateDbContext();
+
+            var fleetList = context.Fleets.ToList();
+
+            return fleetList;
         }
 
         // Put

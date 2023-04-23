@@ -9,6 +9,8 @@ namespace DAO.MappingProfiles
         {
             // Defining of mapping
             CreateMap<TravelAgency.Models.Group_1.Customer, CustomerDetails>();
+            CreateMap<TravelAgency.Models.Group_1.Customer, CustomerAllInfo>();
+
 
             // Create
             CreateMap<CreateCustomerModel, TravelAgency.Models.Group_1.Customer>();

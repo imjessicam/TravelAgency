@@ -14,18 +14,7 @@ namespace TravelAgency.Repositories.Group_1
         public CustomerRepository(IDbContextFactory<DatabaseContext> factory)
         {
             _factory = factory;
-        }
-
-        // List of all customers
-
-        public IReadOnlyList<Customer> GetAll()
-        {
-            using var context = _factory.CreateDbContext();
-
-            var customersList = context.Customers.ToList();
-
-            return customersList;
-        }
+        }        
 
         // Post
         public Guid Create(Customer customer)
@@ -68,7 +57,6 @@ namespace TravelAgency.Repositories.Group_1
 
             return foundItem;
         }
-               
 
         public IEnumerable<Customer> FindMany(IEnumerable<Guid> externalIds)
         {
@@ -79,6 +67,30 @@ namespace TravelAgency.Repositories.Group_1
 
             return foundItems;
         }
+
+        // Get | List of all customers
+        public IReadOnlyList<Customer> GetAll()
+        {
+            using var context = _factory.CreateDbContext();
+
+            var customersList = context.Customers.ToList();
+
+            return customersList;
+        }
+
+        // Get | All Crew from one Customer
+        public IReadOnlyList<Crew> GetCrewMembers(Guid customerExternalId)
+        {
+            using var context = _factory.CreateDbContext();
+
+            // find iteam
+            var customer = context
+                .Customers
+                .Include(x => x.Crews)
+                .FirstOrDefault(x => x.ExternalId == customerExternalId);
+
+            return customer.Crews.ToList();
+        }        
 
         // Put
         public Guid Update(Customer customer)
@@ -124,24 +136,7 @@ namespace TravelAgency.Repositories.Group_1
             // remove items and save changes
             context.RemoveRange(itemsToDelete);
             context.SaveChanges();
-        }
-
-
-
-        // Get All Crew from One Customer
-
-        public IReadOnlyList<Crew> GetCrewMembers(Guid customerExternalId)
-        {
-            using var context = _factory.CreateDbContext();
-
-            // find iteam
-            var customer = context
-                .Customers
-                .Include(x => x.Crews)
-                .FirstOrDefault(x => x.ExternalId == customerExternalId);
-
-            return customer.Crews.ToList();
-        }
+        }        
 
     }
 }

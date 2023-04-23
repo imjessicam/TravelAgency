@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DTO.Models.Group_2.Crew;
+using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Models.Group_1;
 using TravelAgency.Models.Group_2;
@@ -30,19 +31,7 @@ namespace TravelAgency.Repositories.Group_2
             _noDuplicates = noDuplicates;
         }
 
-        // List of all crew members
-
-        public IReadOnlyList<Crew> GetAll()
-        {
-            using var context = _factory.CreateDbContext();
-
-            var crewList = context.Crews.ToList();
-
-            return crewList;
-        }
-
         // Post
-
         public Guid Create(Crew crewMember)
         {
             using var context = _factory.CreateDbContext();
@@ -64,6 +53,37 @@ namespace TravelAgency.Repositories.Group_2
             var foundCrewMember = context.Crews.FirstOrDefault(crew => crew.ExternalId == externalId);
 
             return foundCrewMember;
+        }
+
+        // Get | Find by surname
+        public IReadOnlyList<Crew> FindByLastName(CrewFindByLastName crewMember)
+        {
+            using var context = _factory.CreateDbContext();
+
+            var foundCrewMembers = context.Crews.Where(x => x.LastName.Contains(crewMember.LastName)).ToList();
+
+            return foundCrewMembers;
+        }
+
+        // Get | List of all crew members
+
+        public IReadOnlyList<Crew> GetAll()
+        {
+            using var context = _factory.CreateDbContext();
+
+            var crewList = context.Crews.ToList();
+
+            return crewList;
+        }
+
+        // Get | List of all crew members by customer
+        public IReadOnlyList<Crew> GetAllByCustomer(Guid customerExternalId)
+        {
+            using var context = _factory.CreateDbContext();
+
+            var crewList = context.Customers.Include(x => x.Crews).FirstOrDefault(x => x.ExternalId == customerExternalId);
+
+            return crewList.Crews.ToList();
         }
 
         // Put
@@ -96,7 +116,7 @@ namespace TravelAgency.Repositories.Group_2
         }
 
         
-
+        // GET FROM ANOTHER TABLE
 
         // Get Customer
 

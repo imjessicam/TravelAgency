@@ -1,4 +1,6 @@
-﻿namespace DTO.Models.Group_1.Customer
+﻿using DTO.Models.Group_2.Crew;
+
+namespace DTO.Models.Group_1.Customer
 {
     public class CustomerDetails
     {
@@ -7,5 +9,6 @@
         public string FirstName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+
     }
 }

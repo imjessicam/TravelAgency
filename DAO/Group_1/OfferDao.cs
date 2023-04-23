@@ -2,6 +2,7 @@
 using DTO.Models.Group_2.Offer;
 using TravelAgency.Repositories.Group_1;
 using TravelAgency.Repositories.Group_2;
+using TravelAgency.Validators.Interfaces;
 
 namespace DAO.Group_1
 {
@@ -13,7 +14,13 @@ namespace DAO.Group_1
         private readonly SkipperRepository _skipperRepository;
         private readonly IMapper _mapper;
 
-        public OfferDao(OfferRepository offerRepository, CruiseRepository cruiseRepository, FleetRepository fleetRepository, SkipperRepository skipperRepository, IMapper mapper)
+        // Validators
+        private readonly ICruiseExist _cruiseExist;
+        private readonly IFleetExist _fleetExist;
+        private readonly ISkipperExist _skipperExist;
+        private readonly INoDuplicates _offerNoDuplicates;
+
+        public OfferDao(OfferRepository offerRepository, CruiseRepository cruiseRepository, FleetRepository fleetRepository, SkipperRepository skipperRepository, IMapper mapper, ICruiseExist cruiseExist, IFleetExist fleetExist, ISkipperExist skipperExist, INoDuplicates offerNoDuplicates)
         {
             _offerRepository = offerRepository;
             _cruiseRepository = cruiseRepository;
@@ -21,6 +28,13 @@ namespace DAO.Group_1
             _skipperRepository = skipperRepository;
 
             _mapper = mapper;
+
+            // Validators
+            _cruiseExist = cruiseExist;
+            _fleetExist = fleetExist;
+            _skipperExist = skipperExist;
+            _offerNoDuplicates = offerNoDuplicates;
+            
         }
 
         // Dekorator
@@ -69,9 +83,14 @@ namespace DAO.Group_1
             var offers = _offerRepository.GetAll();
 
             return _mapper.Map<IReadOnlyList<OfferDetails>>(offers);
-        }
+        }        
 
-        
+        public OfferAllInfo GetAllInfo (Guid offerExternalId)
+        {
+            var offer = _offerRepository.GettAllInfo(offerExternalId);
+
+            return _mapper.Map<OfferAllInfo>(offer);
+        }
 
         // Put
         public Guid Update(UpdateOfferModel offerToUpdate)

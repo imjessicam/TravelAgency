@@ -16,17 +16,6 @@ namespace TravelAgency.Repositories.Group_1
             _factory = factory;
         }
 
-        // List of all skippers
-
-        public IReadOnlyList<Skipper> GetAll()
-        {
-            using var context = _factory.CreateDbContext();
-
-            var skippersList = context.Skippers.ToList();
-
-            return skippersList;
-        }
-
         // Post
         public Guid Create(Skipper skipper)
         {
@@ -50,6 +39,16 @@ namespace TravelAgency.Repositories.Group_1
             var foundItem = database.FirstOrDefault(x => x.ExternalId == externalId);
 
             return foundItem;
+        }
+
+        // Get | List of all skippers
+        public IReadOnlyList<Skipper> GetAll()
+        {
+            using var context = _factory.CreateDbContext();
+
+            var skippersList = context.Skippers.ToList();
+
+            return skippersList;
         }
 
         // Put

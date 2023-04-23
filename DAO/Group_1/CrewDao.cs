@@ -13,32 +13,52 @@ namespace DAO.Group_1
         private readonly IMapper _mapper;
         private readonly CustomerRepository _customerRepository;
 
+        // Validators
+        private readonly INoDuplicates _crewNoDuplicates;
+        private readonly ICustomerExist _customerExist;
+        private readonly ICrewExist _crewExist;
+
+
+
         // Constructor
-        public CrewDao(CrewRepository crewRepository, IMapper mapper, CustomerRepository customerRepository)
+        public CrewDao(CrewRepository crewRepository, IMapper mapper, CustomerRepository customerRepository, INoDuplicates crewNoDuplicates, ICrewExist crewExist, ICustomerExist customerExist)
         {
             _crewRepository = crewRepository;
             _mapper = mapper;
 
             _customerRepository = customerRepository;
-        }
 
-        // List of all members
-
-        public IReadOnlyList<CrewDetails> GetAll()
-        {
-            var crewMembers = _crewRepository.GetAll();
-
-            return _mapper.Map<IReadOnlyList<CrewDetails>>(crewMembers);
-        }
+            // Validators
+            _crewExist = crewExist;
+            _crewNoDuplicates = crewNoDuplicates;
+            _customerExist = customerExist;
+        }      
         
-
         // Post
         public Guid Create(CreateCrewModel crewMember)
         {
-            var customer = _customerRepository.Find(crewMember.CustomerExternalId);
+            // Find customer for CustomerId
+            var newCustomer = _customerRepository.Find(crewMember.CustomerExternalId);
 
+            // Check if customer exists
+            var customerIsExist = _customerExist.IsExist(newCustomer.ExternalId);
+            if (!customerIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Customer does not exist, please create or find another customer.", innerException: null);
+            }
+
+            // Mapping
             var newCrewMember = _mapper.Map<TravelAgency.Models.Group_2.Crew>(crewMember);
-            newCrewMember.CustomerId = customer.Id;
+
+            // Update Customer
+            newCrewMember.CustomerId = newCustomer.Id;
+
+            // Check if crewMember already exists
+            var noDuplicates = _crewNoDuplicates.IsValid(crewMember);
+            if (!noDuplicates)
+            {
+                throw new ArgumentOutOfRangeException("The entity already exists, please enter valid data.", innerException: null);
+            }
 
             return _crewRepository.Create(newCrewMember);
         }
@@ -46,30 +66,57 @@ namespace DAO.Group_1
         // Get
         public CrewDetails Find(Guid externalId)
         {
-            var foundCustomer = _crewRepository.GetCustomer(externalId);
-
             var foundCrewMemeber = _crewRepository.Find(externalId);
-            foundCrewMemeber.CustomerId = foundCustomer.Id;
+
+            // Check if item exists
+            var isExist = _crewExist.IsExist(externalId);
+            if (!isExist)
+            {
+                throw new ArgumentOutOfRangeException("The entity does not exist, please create.", innerException: null);
+            }
 
             return _mapper.Map<CrewDetails>(foundCrewMemeber);
+        }
+
+        public IReadOnlyList<CrewDetails> FindByLastName(CrewFindByLastName crewMember)
+        {
+            var foundCrewMembers = _crewRepository.FindByLastName(crewMember).ToList();
+
+            return _mapper.Map<IReadOnlyList<CrewDetails>>(foundCrewMembers);
+        }
+
+        public IReadOnlyList<CrewDetails> GetAll()
+        {
+            var crewMembers = _crewRepository.GetAll();
+
+            return _mapper.Map<IReadOnlyList<CrewDetails>>(crewMembers);
         }
 
         // Put
         public Guid Update(UpdateCrewModel crewToUpdate)
         {
+            // Check if crewMember exists
+            var isExist = _crewExist.IsExist(crewToUpdate.CrewExternalId);
+            if (!isExist)
+            {
+                throw new ArgumentOutOfRangeException("The entity does not exist, please create.", innerException: null);
+            }
+
             // Mapping
             var crewMember = _mapper.Map<TravelAgency.Models.Group_2.Crew>(crewToUpdate);
 
+            // Find new customer
             var customer = _customerRepository.Find(crewToUpdate.CustomerExternalId);
 
-            crewMember.CustomerId = customer.Id;
+            // Check if customer exists
+            var customerIsExist = _customerExist.IsExist(crewToUpdate.CustomerExternalId);
+            if (!customerIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Customer does not exist, please create first or find another customer.", innerException: null);
+            }
 
-            //// Check if item exists
-            //var isExist = _fleetExist.IsExist(fleetToUpdate.ExternalId);
-            //if (!isExist)
-            //{
-            //    throw new ArgumentOutOfRangeException("The entity does not exist, please create.", innerException: null);
-            //}
+            // Update customer
+            crewMember.CustomerId = customer.Id;            
 
             return _crewRepository.Update(crewMember);
         }
@@ -80,13 +127,14 @@ namespace DAO.Group_1
             // Find item
             var crewToDelete = _crewRepository.Find(externalId);
 
-            //// Check if item exists
-            //var isExist = _fleetExist.IsExist(externalId);
-            //if (!isExist)
-            //{
-            //    throw new ArgumentOutOfRangeException("The customer you want to remove does not exist.", innerException: null);
-            //}
+            // Check if item exists
+            var isExist = _crewExist.IsExist(externalId);
+            if (!isExist)
+            {
+                throw new ArgumentOutOfRangeException("The crew you want to remove does not exist.", innerException: null);
+            }
 
+            // Delete crew member
             _crewRepository.Delete(crewToDelete.ExternalId);
         }
     }

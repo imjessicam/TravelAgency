@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DTO.Models.Group_1.Customer;
+using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Models.Group_1;
 using TravelAgency.Models.Group_2;
@@ -14,30 +15,9 @@ namespace TravelAgency.Repositories.Group_2
         {
             _factory = factory;
             _offerRepository = offerRepository;
-        }
+        }       
 
-        // List of all orders
-
-        public IReadOnlyList<Order> GetAll()
-        {
-            using var context = _factory.CreateDbContext();
-
-            var ordersList = context.Orders.ToList();
-
-            return ordersList;
-        }
-
-        // Full info about order
-
-        public Order GetAllInfo(Guid orderExternalId)
-        {
-            using var context = _factory.CreateDbContext();
-
-            var orderInfo = context.Orders.Include(x=> x.Customer).Include(x => x.Offer).ThenInclude(x => x.Fleet).FirstOrDefault(o => o.ExternalId == orderExternalId);
-
-            return orderInfo;
-        }
-
+        // Post
         public Guid Create(Order order)
         {
             using var context = _factory.CreateDbContext();                      
@@ -51,15 +31,41 @@ namespace TravelAgency.Repositories.Group_2
             return externalId;
         }
 
+        // Get
         public Order Find(Guid orderExternalId)
         {
             using var context = _factory.CreateDbContext();
 
-            return context.Orders.FirstOrDefault(o => o.ExternalId == orderExternalId);
-                       
+            return context.Orders.FirstOrDefault(o => o.ExternalId == orderExternalId);                    
             
         }
 
+        // Get | List of all orders
+        public IReadOnlyList<Order> GetAll()
+        {
+            using var context = _factory.CreateDbContext();
+
+            var ordersList = context.Orders.ToList();
+
+            return ordersList;
+        }
+
+        // Get | Full info about order
+        public Order GetAllInfo(Guid orderExternalId)
+        {
+            using var context = _factory.CreateDbContext();
+
+            var orderInfo = context.Orders
+                .Include(x => x.Customer)
+                .Include(x => x.Offer).ThenInclude(x => x.Fleet)
+                .Include(x => x.Offer).ThenInclude(x => x.Cruise)
+                .Include(x => x.Offer).ThenInclude(x => x.Skipper)
+                .FirstOrDefault(o => o.ExternalId == orderExternalId);
+
+            return orderInfo;
+        }
+
+        // Put
         public Guid Update(Order order)
         {
             using var context = _factory.CreateDbContext();
@@ -76,6 +82,7 @@ namespace TravelAgency.Repositories.Group_2
             return order.ExternalId;
         }
 
+        // Delete
         public void Delete(Guid orderExternalId)
         {
             using var context = _factory.CreateDbContext();
@@ -85,7 +92,8 @@ namespace TravelAgency.Repositories.Group_2
             context.SaveChanges();
         }
 
-        //
+
+        // GET FROM ANOTHER TABLE
 
         public Customer GetCustomer(Guid orderExternalId)
         {
