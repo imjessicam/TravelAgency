@@ -19,7 +19,6 @@ namespace DAO.Group_1
         private readonly ICrewExist _crewExist;
 
 
-
         // Constructor
         public CrewDao(CrewRepository crewRepository, IMapper mapper, CustomerRepository customerRepository, INoDuplicates crewNoDuplicates, ICrewExist crewExist, ICustomerExist customerExist)
         {
@@ -47,10 +46,8 @@ namespace DAO.Group_1
                 throw new ArgumentOutOfRangeException("Customer does not exist, please create or find another customer.", innerException: null);
             }
 
-            // Mapping
+            // Mapping - create crewMember
             var newCrewMember = _mapper.Map<TravelAgency.Models.Group_2.Crew>(crewMember);
-
-            // Update Customer
             newCrewMember.CustomerId = newCustomer.Id;
 
             // Check if crewMember already exists
@@ -81,6 +78,13 @@ namespace DAO.Group_1
         public IReadOnlyList<CrewDetails> FindByLastName(CrewFindByLastName crewMember)
         {
             var foundCrewMembers = _crewRepository.FindByLastName(crewMember).ToList();
+
+            // Check if LastName exists
+            var isExist = _crewExist.IsExist(crewMember);
+            if(!isExist)
+            {
+                throw new ArgumentOutOfRangeException("The crew member does not exist, please check if Last Name is correct.", innerException: null);
+            }
 
             return _mapper.Map<IReadOnlyList<CrewDetails>>(foundCrewMembers);
         }

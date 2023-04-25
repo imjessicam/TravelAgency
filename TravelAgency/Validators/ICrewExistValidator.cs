@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DTO.Models.Group_2.Crew;
+using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Validators.Interfaces;
 
@@ -18,9 +19,22 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            var crewMember = context.Cruises.FirstOrDefault(x => x.ExternalId == externalId);
+            var crewMember = context.Crews.FirstOrDefault(x => x.ExternalId == externalId);
 
             if (crewMember == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool IsExist(CrewFindByLastName crewMember)
+        {
+            using var context = _factory.CreateDbContext();
+
+            var foundCrewMembers = context.Crews.FirstOrDefault(x => x.LastName == crewMember.LastName);
+
+            if (foundCrewMembers == null)
             {
                 return false;
             }

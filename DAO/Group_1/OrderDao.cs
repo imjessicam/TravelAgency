@@ -69,26 +69,27 @@ namespace DAO.Group_1
             newOrder.OfferId = offer.Id;
             newOrder.CustomerId = customer.Id;
 
+            // Check if order already exists
+            var noDuplicates = _orderNoDuplicates.IsValid(order);
+            if (!noDuplicates)
+            {
+                throw new ArgumentOutOfRangeException("The order already exists, please enter valid data.", innerException: null);
+            }
+
             return _orderRepository.Create(newOrder);
         }
 
         // Get
         public OrderDetails Find(Guid orderExternalId)
-        {        
-            //var foundCustomer = _orderRepository.GetCustomer(orderExternalId);
-            //var foundOffer = _orderRepository.GetOffer(orderExternalId);
-
+        {
             var foundOrder = _orderRepository.Find(orderExternalId);
 
             // Check if order exists
             var isExist = _orderExist.IsExist(orderExternalId);
             if (!isExist)
             {
-                throw new ArgumentOutOfRangeException("Order does not exist, please create.", innerException: null);
+                throw new ArgumentOutOfRangeException("The order does not exist, please create.", innerException: null);
             }
-
-            //foundOrder.CustomerId = foundCustomer.Id;
-            //foundOrder.OfferId= foundOffer.Id;
 
             return _mapper.Map<OrderDetails>(foundOrder);
         }
@@ -103,6 +104,13 @@ namespace DAO.Group_1
         public OrderAllInfo GetAllInfo (Guid orderExternalId)
         {
             var order = _orderRepository.GetAllInfo(orderExternalId);
+
+            // Check if order exists
+            var isExist = (_orderExist.IsExist(orderExternalId));
+            if (!isExist)
+            {
+                throw new ArgumentOutOfRangeException("Order does not exist.", innerException: null);
+            }
 
             return _mapper.Map<OrderAllInfo>(order);
         }
@@ -131,6 +139,7 @@ namespace DAO.Group_1
                 throw new ArgumentOutOfRangeException("Offer does not exist, please create first or find another customer.", innerException: null);
             }
 
+            // Find order to update
             var order = _mapper.Map<TravelAgency.Models.Group_2.Order>(orderToUpdate);
             order.CustomerId = customer.Id;
             order.OfferId = offer.Id;

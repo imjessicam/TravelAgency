@@ -39,6 +39,9 @@ namespace WebAPITravelAgency
             services.AddTransient<ICustomerExist, ICustomerExistValidator>();
             services.AddTransient<IFleetExist, IFleetExistValidator>();
             services.AddTransient<ISkipperExist, ISkipperExistValidator>();
+            services.AddTransient<ICrewExist, ICrewExistValidator>();
+            services.AddTransient<IOfferExist, IOfferExistValidator>();
+            services.AddTransient<IOrderExist, IOrderExistValidator>();
 
             services.AddTransient<ICollectionValidator, CollectionValidator>();
             services.AddTransient<INoDuplicates, NoDuplicatesValidator>();
