@@ -1,4 +1,5 @@
-﻿using DTO.Models.Group_1.Cruise;
+﻿using System;
+using DTO.Models.Group_1.Cruise;
 using DTO.Models.Group_1.Customer;
 using DTO.Models.Group_1.Fleet;
 using DTO.Models.Group_1.Skipper;
@@ -25,12 +26,14 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            var lastName = context.Customers.FirstOrDefault(x => x.LastName == customer.LastName);
-            var firstName = context.Customers.FirstOrDefault(x => x.FirstName == customer.FirstName);
+            var customerData = context.Customers
+                .Where(c => c.LastName == customer.LastName && c.FirstName == customer.FirstName)
+                .SingleOrDefault();
+
             var email = context.Customers.FirstOrDefault(x => x.Email == customer.Email);
             var phone = context.Customers.FirstOrDefault(x => x.Phone == customer.Phone);
 
-            if (lastName != null && firstName != null || email != null || phone != null)
+            if (customerData != null || email != null || phone != null)
             {
                 return false;
             }
@@ -41,12 +44,14 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            var lastName = context.Customers.FirstOrDefault(x => x.LastName == customer.LastName);
-            var firstName = context.Customers.FirstOrDefault(x => x.FirstName == customer.FirstName);
+            var customerData = context.Customers
+                .Where(c => c.LastName == customer.LastName && c.FirstName == customer.FirstName)
+                .SingleOrDefault();
+
             var email = context.Customers.FirstOrDefault(x => x.Email == customer.Email);
             var phone = context.Customers.FirstOrDefault(x => x.Phone == customer.Phone);
 
-            if (lastName != null && firstName != null || email != null || phone != null)
+            if (customerData != null || email != null || phone != null)
             {
                 return false;
             }
@@ -58,10 +63,9 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            var type = context.Fleets.FirstOrDefault(x => x.Type == fleet.Type);
             var name = context.Fleets.FirstOrDefault(x => x.Name == fleet.Name);
             
-            if(type != null && name != null || name != null)
+            if(name != null)
             {
                 return false;
             }
@@ -72,10 +76,9 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            var type = context.Fleets.FirstOrDefault(x => x.Type == fleet.Type);
             var name = context.Fleets.FirstOrDefault(x => x.Name == fleet.Name);
 
-            if (type != null && name != null || name != null)
+            if (name != null)
             {
                 return false;
             }
@@ -87,12 +90,14 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            var lastName = context.Skippers.FirstOrDefault(x => x.LastName == skipper.LastName);
-            var firstName = context.Skippers.FirstOrDefault(x => x.FirstName == skipper.FirstName);
+            var skipperData = context.Skippers
+                .Where(s => s.LastName == skipper.LastName && s.FirstName == skipper.FirstName)
+                .SingleOrDefault();
+
             var email = context.Skippers.FirstOrDefault(x => x.Email == skipper.Email);
             var phone = context.Skippers.FirstOrDefault(x => x.Phone == skipper.Phone);            
 
-            if (lastName != null && firstName != null || email != null || phone != null)
+            if (skipperData != null || email != null || phone != null)
             {
                 return false;
             }
@@ -103,12 +108,14 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            var lastName = context.Skippers.FirstOrDefault(x => x.LastName == skipper.LastName);
-            var firstName = context.Skippers.FirstOrDefault(x => x.FirstName == skipper.FirstName);
+            var skipperData = context.Skippers
+                .Where(s => s.LastName == skipper.LastName && s.FirstName == skipper.FirstName)
+                .SingleOrDefault();
+
             var email = context.Skippers.FirstOrDefault(x => x.Email == skipper.Email);
             var phone = context.Skippers.FirstOrDefault(x => x.Phone == skipper.Phone);
 
-            if (lastName != null && firstName != null || email != null || phone != null)
+            if (skipperData != null || email != null || phone != null)
             {
                 return false;
             }
@@ -147,10 +154,11 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            var lastName = context.Crews.FirstOrDefault(x => x.LastName == crewMember.LastName);
-            var firstName = context.Crews.FirstOrDefault(x => x.FirstName == crewMember.FirstName);
+            var crewMemberData = context.Crews
+                .Where(cm => cm.LastName == crewMember.LastName && cm.FirstName == crewMember.FirstName)
+                .SingleOrDefault();
 
-            if (lastName != null && firstName != null)
+            if (crewMemberData != null)
             {
                 return false;
             }
@@ -161,10 +169,11 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            var lastName = context.Crews.FirstOrDefault(x => x.LastName == crewMember.LastName);
-            var firstName = context.Crews.FirstOrDefault(x => x.FirstName == crewMember.FirstName);
+            var crewMemberData = context.Crews
+                .Where(cm => cm.LastName == crewMember.LastName && cm.FirstName == crewMember.FirstName)
+                .SingleOrDefault();
 
-            if (lastName != null && firstName != null)
+            if (crewMemberData != null)
             {
                 return false;
             }
@@ -176,15 +185,19 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            // OfferId
+            // Offer
             var foundOffer = context.Offers.FirstOrDefault(x => x.ExternalId == order.OfferExternalId);
-            var offerId = context.Orders.FirstOrDefault(x => x.OfferId == foundOffer.Id);
+            //var offerId = context.Orders.FirstOrDefault(x => x.OfferId == foundOffer.Id);           
 
-            // CustomerId
+            // Customer
             var foundCustomer = context.Customers.FirstOrDefault(x => x.ExternalId == order.CustomerExternalId);
-            var customerId = context.Orders.FirstOrDefault(x => x.CustomerId == foundCustomer.Id);
+            //var customerId = context.Orders.FirstOrDefault(x => x.CustomerId == foundCustomer.Id);
 
-            if (offerId != null && customerId != null)
+            var orderData = context.Orders
+                .Where(o => o.OfferId == foundOffer.Id && o.CustomerId == foundCustomer.Id)
+                .SingleOrDefault();
+
+            if (orderData != null)
             {
                 return false;
             }
@@ -195,15 +208,17 @@ namespace TravelAgency.Validators
         {
             using var context = _factory.CreateDbContext();
 
-            // OfferId
+            // Offer
             var foundOffer = context.Offers.FirstOrDefault(x => x.ExternalId == order.OfferExternalId);
-            var offerId = context.Orders.FirstOrDefault(x => x.OfferId == foundOffer.Id);
 
-            // CustomerId
+            // Customer
             var foundCustomer = context.Customers.FirstOrDefault(x => x.ExternalId == order.CustomerExternalId);
-            var customerId = context.Orders.FirstOrDefault(x => x.CustomerId == foundCustomer.Id);
 
-            if (offerId != null && customerId != null)
+            var orderData = context.Orders
+                .Where(o => o.OfferId == foundOffer.Id && o.CustomerId == foundCustomer.Id)
+                .SingleOrDefault();
+
+            if (orderData != null)
             {
                 return false;
             }
