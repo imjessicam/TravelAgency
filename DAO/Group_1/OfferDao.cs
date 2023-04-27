@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DTO.Models.Group_2.Offer;
+using TravelAgency.Models.Group_2;
 using TravelAgency.Repositories.Group_1;
 using TravelAgency.Repositories.Group_2;
 using TravelAgency.Validators.Interfaces;
@@ -13,6 +14,7 @@ namespace DAO.Group_1
         private readonly FleetRepository _fleetRepository;
         private readonly SkipperRepository _skipperRepository;
         private readonly IMapper _mapper;
+        private readonly IOfferExist _offerExist;
 
         // Validators
         private readonly ICruiseExist _cruiseExist;
@@ -20,7 +22,7 @@ namespace DAO.Group_1
         private readonly ISkipperExist _skipperExist;
         private readonly INoDuplicates _offerNoDuplicates;
 
-        public OfferDao(OfferRepository offerRepository, CruiseRepository cruiseRepository, FleetRepository fleetRepository, SkipperRepository skipperRepository, IMapper mapper, ICruiseExist cruiseExist, IFleetExist fleetExist, ISkipperExist skipperExist, INoDuplicates offerNoDuplicates)
+        public OfferDao(OfferRepository offerRepository, CruiseRepository cruiseRepository, FleetRepository fleetRepository, SkipperRepository skipperRepository, IMapper mapper, IOfferExist offerExist, ICruiseExist cruiseExist, IFleetExist fleetExist, ISkipperExist skipperExist, INoDuplicates offerNoDuplicates)
         {
             _offerRepository = offerRepository;
             _cruiseRepository = cruiseRepository;
@@ -30,11 +32,11 @@ namespace DAO.Group_1
             _mapper = mapper;
 
             // Validators
+            _offerExist = offerExist;
             _cruiseExist = cruiseExist;
             _fleetExist = fleetExist;
             _skipperExist = skipperExist;
-            _offerNoDuplicates = offerNoDuplicates;
-            
+            _offerNoDuplicates = offerNoDuplicates;            
         }
 
         // Dekorator
@@ -90,14 +92,13 @@ namespace DAO.Group_1
 
         public OfferDetails Find(Guid offerExternalId)
         {
-            var foundCruise = _offerRepository.GetCruise(offerExternalId);
-            var foundFleet = _offerRepository.GetFleet(offerExternalId);
-            var foundSkipper = _offerRepository.GetSkipper(offerExternalId);
-
             var foundOffer = _offerRepository.Find(offerExternalId);
-            foundOffer.CruiseId = foundCruise.Id;
-            foundOffer.FleetId = foundFleet.Id;
-            foundOffer.SkipperId = foundSkipper.Id;
+
+            var offerIsExist = _offerExist.IsExist(offerExternalId);
+            if (!offerIsExist)
+            {
+                throw new ArgumentOutOfRangeException("The offer does not exist, please create.", innerException: null);
+            }
 
             return _mapper.Map<OfferDetails>(foundOffer);
         }
@@ -112,6 +113,12 @@ namespace DAO.Group_1
         public OfferAllInfo GetAllInfo (Guid offerExternalId)
         {
             var offer = _offerRepository.GettAllInfo(offerExternalId);
+
+            var offerIsExist = _offerExist.IsExist(offerExternalId);
+            if (!offerIsExist)
+            {
+                throw new ArgumentOutOfRangeException("The offer does not exist.", innerException: null);
+            }
 
             return _mapper.Map<OfferAllInfo>(offer);
         }
@@ -160,6 +167,13 @@ namespace DAO.Group_1
         public void Delete(Guid offerExternalId)
         {
             var offerToDelete = _offerRepository.Find(offerExternalId);
+
+            // Check if offer exists
+            var isExist = _offerExist.IsExist(offerExternalId);
+            if (!isExist)
+            {
+                throw new ArgumentOutOfRangeException("The offer you want to remove does not exist.", innerException: null);
+            }
 
             _offerRepository.Delete(offerToDelete.ExternalId);
         }
