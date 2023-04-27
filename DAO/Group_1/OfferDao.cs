@@ -45,19 +45,43 @@ namespace DAO.Group_1
             // Find Cruise
             var cruise = _cruiseRepository.Find(offer.CruiseExternalId);
 
+            var cruiseIsExist = _cruiseExist.IsExist(offer.CruiseExternalId);
+            if (!cruiseIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Cruise does not exist, please create first or find another customer.", innerException: null);
+            }
+
             // Find Fleet
             var fleet = _fleetRepository.Find(offer.FleetExternalId);
+
+            var fleetIsExist = _fleetExist.IsExist(offer.FleetExternalId);
+            if (!fleetIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Fleet does not exist, please create first or find another customer.", innerException: null);
+            }
 
             // Find Skipper
             var skipper = _skipperRepository.Find(offer.SkipperExternalId);
 
+            var skipperIsExist = _skipperExist.IsExist(offer.SkipperExternalId);
+            if (!skipperIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Skipper does not exist, please create first or find another customer.", innerException: null);
+            }
+
             // Create new Offer
             var newOffer = _mapper.Map<TravelAgency.Models.Group_2.Offer>(offer);
-
-            // Chose Ids of Cruise / Fleet / Skipper
             newOffer.CruiseId = cruise.Id;
             newOffer.FleetId = fleet.Id;
             newOffer.SkipperId = skipper.Id;
+
+            // Check if offer already exists
+            var noDuplicates = _offerNoDuplicates.IsValid(offer);
+            if (!noDuplicates)
+            {
+                throw new ArgumentOutOfRangeException("The offer already exists, please enter valid data.", innerException: null);
+            }
+
 
             return _offerRepository.Create(newOffer);
         }
@@ -95,8 +119,38 @@ namespace DAO.Group_1
         // Put
         public Guid Update(UpdateOfferModel offerToUpdate)
         {
+            // Find cruise
+            var cruise = _cruiseRepository.Find(offerToUpdate.CruiseExternalId);
+
+            var cruiseIsExist = _cruiseExist.IsExist(offerToUpdate.CruiseExternalId);
+            if (!cruiseIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Cruise does not exist, please create first or find another customer.", innerException: null);
+            }
+
+            // Find fleet
+            var fleet = _fleetRepository.Find(offerToUpdate.FleetExternalId);
+
+            var fleetIsExist = _fleetExist.IsExist(offerToUpdate.FleetExternalId);
+            if (!fleetIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Fleet does not exist, please create first or find another customer.", innerException: null);
+            }
+
+            // Find skipper
+            var skipper = _skipperRepository.Find(offerToUpdate.SkipperExternalId);
+
+            var skipperIsExist = _skipperExist.IsExist(offerToUpdate.SkipperExternalId);
+            if (!skipperIsExist)
+            {
+                throw new ArgumentOutOfRangeException("Skipper does not exist, please create first or find another customer.", innerException: null);
+            }
+
             // Mapping
             var offer = _mapper.Map<TravelAgency.Models.Group_2.Offer>(offerToUpdate);
+            offer.CruiseId = cruise.Id;
+            offer.FleetId = fleet.Id;
+            offer.SkipperId = skipper.Id;
 
             return _offerRepository.Update(offer);
         }

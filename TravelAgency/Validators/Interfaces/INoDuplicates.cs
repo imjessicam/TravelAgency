@@ -31,9 +31,9 @@ namespace TravelAgency.Validators.Interfaces
         bool IsValid(CreateCrewModel crew);
         bool IsValid(UpdateCrewModel crew);
 
-        //// Offer
-        //bool IsValid(CreateOfferModel crew);
-        //bool IsValid(UpdateOfferModel crew);
+        // Offer
+        bool IsValid(CreateOfferModel crew);
+        bool IsValid(UpdateOfferModel crew);
 
         // Order
         bool IsValid(CreateOrderModel crew);

@@ -4,6 +4,7 @@ using DTO.Models.Group_1.Customer;
 using DTO.Models.Group_1.Fleet;
 using DTO.Models.Group_1.Skipper;
 using DTO.Models.Group_2.Crew;
+using DTO.Models.Group_2.Offer;
 using DTO.Models.Group_2.OfferCustomer;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
@@ -174,6 +175,67 @@ namespace TravelAgency.Validators
                 .SingleOrDefault();
 
             if (crewMemberData != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        // Offer
+        public bool IsValid(CreateOfferModel offer)
+        {
+            using var context = _factory.CreateDbContext();
+
+            // Title
+            var offerTitle = context.Offers
+                .Where(o => o.Title == offer.Title)
+                .SingleOrDefault();
+
+            // Skipper 
+            var skipper = context.Skippers.FirstOrDefault(s => s.ExternalId == offer.SkipperExternalId);
+
+            var offerStartEndSkipper = context.Offers
+                .Where(o => o.Start == offer.Start && o.End == offer.End && o.SkipperId == skipper.Id)
+                .SingleOrDefault();
+
+            // Fleet
+            var fleet = context.Fleets.FirstOrDefault(f => f.ExternalId == offer.FleetExternalId);
+
+            var offerStartEndFleet = context.Offers
+                .Where(o => o.Start == offer.Start && o.End == offer.End && o.FleetId == fleet.Id)
+                .SingleOrDefault();
+
+            if (offerTitle != null || offerStartEndSkipper != null || offerStartEndFleet != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool IsValid(UpdateOfferModel offer)
+        {
+            using var context = _factory.CreateDbContext();
+
+            // Title
+            var offerTitle = context.Offers
+                .Where(o => o.Title == offer.Title)
+                .SingleOrDefault();
+
+            // Skipper 
+            var skipper = context.Skippers.FirstOrDefault(s => s.ExternalId == offer.SkipperExternalId);
+
+            var offerStartEndSkipper = context.Offers
+                .Where(o => o.Start == offer.Start && o.End == offer.End && o.SkipperId == skipper.Id)
+                .SingleOrDefault();
+
+            // Fleet
+            var fleet = context.Fleets.FirstOrDefault(f => f.ExternalId == offer.FleetExternalId);
+
+            var offerStartEndFleet = context.Offers
+                .Where(o => o.Start == offer.Start && o.End == offer.End && o.FleetId == fleet.Id)
+                .SingleOrDefault();
+
+            if (offerTitle != null || offerStartEndSkipper != null || offerStartEndFleet != null)
             {
                 return false;
             }
