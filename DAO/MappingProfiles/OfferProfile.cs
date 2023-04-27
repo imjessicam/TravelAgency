@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DTO.Models.Group_1.Fleet;
 using DTO.Models.Group_2.Offer;
+using TravelAgency.Models;
 
 namespace DAO.MappingProfiles
 {
@@ -9,15 +10,15 @@ namespace DAO.MappingProfiles
         public OfferProfile()
         {
             // Defining of mapping
-            CreateMap<TravelAgency.Models.Group_2.Offer, OfferDetails>();
-            CreateMap<TravelAgency.Models.Group_2.Offer, OfferAllInfo>();
+            CreateMap<Offer, OfferDetails>();
+            CreateMap<Offer, OfferAllInfo>();
 
 
             // Create
-            CreateMap<CreateOfferModel, TravelAgency.Models.Group_2.Offer>();
+            CreateMap<CreateOfferModel, Offer>();
 
             // Update
-            CreateMap<UpdateOfferModel, TravelAgency.Models.Group_2.Offer>().ForMember(destination => destination.ExternalId, options => options.MapFrom(source => source.OfferExternalId));
+            CreateMap<UpdateOfferModel, Offer>().ForMember(destination => destination.ExternalId, options => options.MapFrom(source => source.OfferExternalId));
 
         }
     }

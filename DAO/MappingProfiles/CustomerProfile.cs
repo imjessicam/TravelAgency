@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DTO.Models.Group_1.Customer;
+using TravelAgency.Models;
 
 namespace DAO.MappingProfiles
 {
@@ -8,15 +9,15 @@ namespace DAO.MappingProfiles
         public CustomerProfile()
         {
             // Defining of mapping
-            CreateMap<TravelAgency.Models.Group_1.Customer, CustomerDetails>();
-            CreateMap<TravelAgency.Models.Group_1.Customer, CustomerAllInfo>();
+            CreateMap<Customer, CustomerDetails>();
+            CreateMap<Customer, CustomerAllInfo>();
 
 
             // Create
-            CreateMap<CreateCustomerModel, TravelAgency.Models.Group_1.Customer>();
+            CreateMap<CreateCustomerModel, Customer>();
 
             // Update
-            CreateMap<UpdateCustomerModel, TravelAgency.Models.Group_1.Customer>();
+            CreateMap<UpdateCustomerModel, Customer>();
 
         }
 

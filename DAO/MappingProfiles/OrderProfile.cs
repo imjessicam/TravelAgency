@@ -2,6 +2,7 @@
 using DTO.Models.Group_2.Offer;
 using DTO.Models.Group_2.OfferCustomer;
 using DTO.Models.Group_2.Order;
+using TravelAgency.Models;
 
 namespace DAO.MappingProfiles
 {
@@ -10,15 +11,15 @@ namespace DAO.MappingProfiles
         public OrderProfile()
         {
             // Defining of mapping
-            CreateMap<TravelAgency.Models.Group_2.Order, OrderDetails>();
-            CreateMap<TravelAgency.Models.Group_2.Order, OrderAllInfo>();
+            CreateMap<Order, OrderDetails>();
+            CreateMap<Order, OrderAllInfo>();
 
 
             // Create
-            CreateMap<CreateOrderModel, TravelAgency.Models.Group_2.Order>();
+            CreateMap<CreateOrderModel, Order>();
 
             // Update
-            CreateMap<UpdateOrderModel, TravelAgency.Models.Group_2.Order>().ForMember(destination => destination.ExternalId, options => options.MapFrom(source => source.OrderExternalId));
+            CreateMap<UpdateOrderModel, Order>().ForMember(destination => destination.ExternalId, options => options.MapFrom(source => source.OrderExternalId));
         }
     }
 }

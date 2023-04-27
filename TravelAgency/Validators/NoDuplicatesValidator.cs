@@ -8,7 +8,6 @@ using DTO.Models.Group_2.Offer;
 using DTO.Models.Group_2.OfferCustomer;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
-using TravelAgency.Models.Group_1;
 using TravelAgency.Validators.Interfaces;
 
 namespace TravelAgency.Validators

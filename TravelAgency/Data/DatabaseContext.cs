@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TravelAgency.Mapping.Group_1;
-using TravelAgency.Mapping.Group_2;
-using TravelAgency.Models.Group_1;
-using TravelAgency.Models.Group_2;
+using TravelAgency.Mapping;
+using TravelAgency.Models;
 
 namespace TravelAgency.Data
 {

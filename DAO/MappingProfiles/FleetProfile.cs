@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DTO.Models.Group_1.Customer;
 using DTO.Models.Group_1.Fleet;
+using TravelAgency.Models;
 
 namespace DAO.MappingProfiles
 {
@@ -9,13 +10,13 @@ namespace DAO.MappingProfiles
         public FleetProfile()
         {
             // Defining of mapping
-            CreateMap<TravelAgency.Models.Group_1.Fleet, FleetDetails>();
+            CreateMap<Fleet, FleetDetails>();
 
             // Create
-            CreateMap<CreateFleetModel, TravelAgency.Models.Group_1.Fleet>();
+            CreateMap<CreateFleetModel, Fleet>();
 
             // Update
-            CreateMap<UpdateFleetModel, TravelAgency.Models.Group_1.Fleet>();
+            CreateMap<UpdateFleetModel, Fleet>();
 
         }
     }

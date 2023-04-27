@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DTO.Models.Group_2.Crew;
+using TravelAgency.Models;
 
 namespace DAO.MappingProfiles
 {
@@ -8,15 +9,15 @@ namespace DAO.MappingProfiles
         public CrewProfile()
         {
             // Defining of mapping
-            CreateMap<TravelAgency.Models.Group_2.Crew, CrewDetails>();
-            CreateMap<TravelAgency.Models.Group_2.Crew, CrewBasicInfo>();
+            CreateMap<Crew, CrewDetails>();
+            CreateMap<Crew, CrewBasicInfo>();
 
 
             // Create
-            CreateMap<CreateCrewModel, TravelAgency.Models.Group_2.Crew>();
+            CreateMap<CreateCrewModel, Crew>();
 
             // Update
-            CreateMap<UpdateCrewModel, TravelAgency.Models.Group_2.Crew>().ForMember(destination => destination.ExternalId, options => options.MapFrom(source => source.CrewExternalId));
+            CreateMap<UpdateCrewModel, Crew>().ForMember(destination => destination.ExternalId, options => options.MapFrom(source => source.CrewExternalId));
         }
 
     }

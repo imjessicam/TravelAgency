@@ -2,8 +2,7 @@
 using DAO.MappingProfiles;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
-using TravelAgency.Repositories.Group_1;
-using TravelAgency.Repositories.Group_2;
+using TravelAgency.Repositories;
 using TravelAgency.Validators;
 using TravelAgency.Validators.Interfaces;
 

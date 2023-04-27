@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DTO.Models.Group_1.Cruise;
 using DTO.Models.Group_1.Customer;
+using TravelAgency.Models;
 
 namespace DAO.MappingProfiles
 {
@@ -9,13 +10,13 @@ namespace DAO.MappingProfiles
         public CruiseProfile()
         {
             // Defining of mapping
-            CreateMap<TravelAgency.Models.Group_1.Cruise, CruiseDetails>();
+            CreateMap<Cruise, CruiseDetails>();
 
             // Create
-            CreateMap<CreateCruiseModel, TravelAgency.Models.Group_1.Cruise>();
+            CreateMap<CreateCruiseModel, Cruise>();
 
             // Update
-            CreateMap<UpdateCruiseModel, TravelAgency.Models.Group_1.Cruise>();
+            CreateMap<UpdateCruiseModel, Cruise>();
 
         }
     }

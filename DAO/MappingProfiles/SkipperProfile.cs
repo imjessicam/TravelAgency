@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DTO.Models.Group_1.Skipper;
+using TravelAgency.Models;
 
 namespace DAO.MappingProfiles
 {
@@ -8,13 +9,13 @@ namespace DAO.MappingProfiles
         public SkipperProfile()
         {
             // Defining of mapping
-            CreateMap<TravelAgency.Models.Group_1.Skipper, SkipperDetails>();
+            CreateMap<Skipper, SkipperDetails>();
 
             // Create
-            CreateMap<CreateSkipperModel, TravelAgency.Models.Group_1.Skipper>();
+            CreateMap<CreateSkipperModel, Skipper>();
 
             // Update
-            CreateMap<UpdateSkipperModel, TravelAgency.Models.Group_1.Skipper>();
+            CreateMap<UpdateSkipperModel, Skipper>();
         }
     }
 }
