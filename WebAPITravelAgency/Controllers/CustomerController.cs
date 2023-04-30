@@ -1,5 +1,5 @@
-﻿using DAO.Group_1;
-using DTO.Models.Group_1.Customer;
+﻿using DAO.AllDAO;
+using DTO.Models.Customer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using TravelAgency.Validators;

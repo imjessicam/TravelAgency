@@ -1,6 +1,5 @@
-﻿using DAO.Group_1;
-using DTO.Models.Group_2.OfferCustomer;
-using DTO.Models.Group_2.Order;
+﻿using DAO.AllDAO;
+using DTO.Models.Order;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPITravelAgency.Controllers

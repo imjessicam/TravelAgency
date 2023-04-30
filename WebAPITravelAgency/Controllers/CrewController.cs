@@ -1,6 +1,5 @@
-﻿using DAO.Group_1;
-using DTO.Models.Group_1.Fleet;
-using DTO.Models.Group_2.Crew;
+﻿using DAO.AllDAO;
+using DTO.Models.Crew;
 using Microsoft.AspNetCore.Mvc;
 using TravelAgency.Repositories;
 

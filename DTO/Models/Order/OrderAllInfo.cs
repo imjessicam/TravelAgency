@@ -1,8 +1,8 @@
-﻿using DTO.Models.Group_1.Customer;
-using DTO.Models.Group_2.Crew;
-using DTO.Models.Group_2.Offer;
+﻿using DTO.Models.Customer;
+using DTO.Models.Crew;
+using DTO.Models.Offer;
 
-namespace DTO.Models.Group_2.Order
+namespace DTO.Models.Order
 {
     public class OrderAllInfo
     {

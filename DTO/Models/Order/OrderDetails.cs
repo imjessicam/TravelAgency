@@ -1,4 +1,4 @@
-﻿namespace DTO.Models.Group_2.Order
+﻿namespace DTO.Models.Order
 {
     public class OrderDetails
     {

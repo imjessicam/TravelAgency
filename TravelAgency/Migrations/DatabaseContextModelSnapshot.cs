@@ -22,7 +22,38 @@ namespace TravelAgency.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("TravelAgency.Models.Group_1.Cruise", b =>
+            modelBuilder.Entity("TravelAgency.Models.Crew", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ExternalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("LastName");
+
+                    b.ToTable("Crews");
+                });
+
+            modelBuilder.Entity("TravelAgency.Models.Cruise", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,7 +80,7 @@ namespace TravelAgency.Migrations
                     b.ToTable("Cruises");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_1.Customer", b =>
+            modelBuilder.Entity("TravelAgency.Models.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,7 +114,7 @@ namespace TravelAgency.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_1.Fleet", b =>
+            modelBuilder.Entity("TravelAgency.Models.Fleet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -110,76 +141,7 @@ namespace TravelAgency.Migrations
                     b.ToTable("Fleets");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_1.Skipper", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ExternalId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Info")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LastName");
-
-                    b.ToTable("Skippers");
-                });
-
-            modelBuilder.Entity("TravelAgency.Models.Group_2.Crew", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ExternalId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("LastName");
-
-                    b.ToTable("Crews");
-                });
-
-            modelBuilder.Entity("TravelAgency.Models.Group_2.Offer", b =>
+            modelBuilder.Entity("TravelAgency.Models.Offer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -234,7 +196,7 @@ namespace TravelAgency.Migrations
                     b.ToTable("Offers");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_2.Order", b =>
+            modelBuilder.Entity("TravelAgency.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -260,9 +222,47 @@ namespace TravelAgency.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_2.Crew", b =>
+            modelBuilder.Entity("TravelAgency.Models.Skipper", b =>
                 {
-                    b.HasOne("TravelAgency.Models.Group_1.Customer", "Customer")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ExternalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Info")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LastName");
+
+                    b.ToTable("Skippers");
+                });
+
+            modelBuilder.Entity("TravelAgency.Models.Crew", b =>
+                {
+                    b.HasOne("TravelAgency.Models.Customer", "Customer")
                         .WithMany("Crews")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -271,21 +271,21 @@ namespace TravelAgency.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_2.Offer", b =>
+            modelBuilder.Entity("TravelAgency.Models.Offer", b =>
                 {
-                    b.HasOne("TravelAgency.Models.Group_1.Cruise", "Cruise")
+                    b.HasOne("TravelAgency.Models.Cruise", "Cruise")
                         .WithMany("Offers")
                         .HasForeignKey("CruiseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TravelAgency.Models.Group_1.Fleet", "Fleet")
+                    b.HasOne("TravelAgency.Models.Fleet", "Fleet")
                         .WithMany("Offers")
                         .HasForeignKey("FleetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TravelAgency.Models.Group_1.Skipper", "Skipper")
+                    b.HasOne("TravelAgency.Models.Skipper", "Skipper")
                         .WithMany("Offers")
                         .HasForeignKey("SkipperId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -298,15 +298,15 @@ namespace TravelAgency.Migrations
                     b.Navigation("Skipper");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_2.Order", b =>
+            modelBuilder.Entity("TravelAgency.Models.Order", b =>
                 {
-                    b.HasOne("TravelAgency.Models.Group_1.Customer", "Customer")
+                    b.HasOne("TravelAgency.Models.Customer", "Customer")
                         .WithMany("OffersCustomers")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TravelAgency.Models.Group_2.Offer", "Offer")
+                    b.HasOne("TravelAgency.Models.Offer", "Offer")
                         .WithMany("OffersCustomers")
                         .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -317,31 +317,31 @@ namespace TravelAgency.Migrations
                     b.Navigation("Offer");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_1.Cruise", b =>
+            modelBuilder.Entity("TravelAgency.Models.Cruise", b =>
                 {
                     b.Navigation("Offers");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_1.Customer", b =>
+            modelBuilder.Entity("TravelAgency.Models.Customer", b =>
                 {
                     b.Navigation("Crews");
 
                     b.Navigation("OffersCustomers");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_1.Fleet", b =>
+            modelBuilder.Entity("TravelAgency.Models.Fleet", b =>
                 {
                     b.Navigation("Offers");
                 });
 
-            modelBuilder.Entity("TravelAgency.Models.Group_1.Skipper", b =>
-                {
-                    b.Navigation("Offers");
-                });
-
-            modelBuilder.Entity("TravelAgency.Models.Group_2.Offer", b =>
+            modelBuilder.Entity("TravelAgency.Models.Offer", b =>
                 {
                     b.Navigation("OffersCustomers");
+                });
+
+            modelBuilder.Entity("TravelAgency.Models.Skipper", b =>
+                {
+                    b.Navigation("Offers");
                 });
 #pragma warning restore 612, 618
         }

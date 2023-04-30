@@ -1,4 +1,4 @@
-﻿namespace DTO.Models.Group_1.Customer
+﻿namespace DTO.Models.Customer
 {
     public class CreateCustomerModel
     {

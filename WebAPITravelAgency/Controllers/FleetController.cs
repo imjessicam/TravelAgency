@@ -1,5 +1,5 @@
-﻿using DAO.Group_1;
-using DTO.Models.Group_1.Fleet;
+﻿using DAO.AllDAO;
+using DTO.Models.Fleet;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPITravelAgency.Controllers

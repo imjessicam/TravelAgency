@@ -1,4 +1,4 @@
-﻿namespace DTO.Models.Group_2.Offer
+﻿namespace DTO.Models.Offer
 {
     public class OfferDetails
     {

@@ -1,4 +1,4 @@
-﻿namespace DTO.Models.Group_1.Skipper
+﻿namespace DTO.Models.Skipper
 {
     public class SkipperDetails
     {

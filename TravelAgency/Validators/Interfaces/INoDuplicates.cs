@@ -1,11 +1,10 @@
-﻿using DTO.Models.Group_1.Cruise;
-using DTO.Models.Group_1.Customer;
-using DTO.Models.Group_1.Fleet;
-using DTO.Models.Group_1.Skipper;
-using DTO.Models.Group_2.Crew;
-using DTO.Models.Group_2.Offer;
-using DTO.Models.Group_2.OfferCustomer;
-using DTO.Models.Group_2.Order;
+﻿using DTO.Models.Cruise;
+using DTO.Models.Customer;
+using DTO.Models.Fleet;
+using DTO.Models.Skipper;
+using DTO.Models.Crew;
+using DTO.Models.Offer;
+using DTO.Models.Order;
 
 namespace TravelAgency.Validators.Interfaces
 {

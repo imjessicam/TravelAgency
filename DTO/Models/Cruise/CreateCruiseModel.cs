@@ -1,4 +1,4 @@
-﻿namespace DTO.Models.Group_1.Cruise
+﻿namespace DTO.Models.Cruise
 {
     public class CreateCruiseModel
     {

@@ -1,4 +1,4 @@
-﻿using DAO.Group_1;
+﻿using DAO.AllDAO;
 using DAO.MappingProfiles;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;

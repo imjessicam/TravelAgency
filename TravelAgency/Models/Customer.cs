@@ -12,7 +12,7 @@
         // Crew
         public virtual List<Crew> Crews { get; set; }
 
-        // OfferCustomer
+        // Order
         public virtual List<Order> OffersCustomers { get; set; }
     }
 }

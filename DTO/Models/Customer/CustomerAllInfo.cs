@@ -1,6 +1,6 @@
-﻿using DTO.Models.Group_2.Crew;
+﻿using DTO.Models.Crew;
 
-namespace DTO.Models.Group_1.Customer
+namespace DTO.Models.Customer
 {
     public class CustomerAllInfo
     {

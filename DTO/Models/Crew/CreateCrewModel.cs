@@ -1,4 +1,4 @@
-﻿namespace DTO.Models.Group_2.Crew
+﻿namespace DTO.Models.Crew
 {
     public class CreateCrewModel
     {

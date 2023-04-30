@@ -8,6 +8,9 @@ namespace TravelAgency.Mapping
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
+            builder
+                .HasKey(x => x.Id);            
+
             // Offer
             builder
                 .HasOne(x => x.Offer)

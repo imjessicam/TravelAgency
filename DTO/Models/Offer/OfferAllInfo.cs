@@ -1,8 +1,8 @@
-﻿using DTO.Models.Group_1.Cruise;
-using DTO.Models.Group_1.Fleet;
-using DTO.Models.Group_1.Skipper;
+﻿using DTO.Models.Cruise;
+using DTO.Models.Fleet;
+using DTO.Models.Skipper;
 
-namespace DTO.Models.Group_2.Offer
+namespace DTO.Models.Offer
 {
     public class OfferAllInfo
     {

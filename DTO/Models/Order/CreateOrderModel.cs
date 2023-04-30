@@ -1,5 +1,4 @@
-﻿namespace DTO.Models.Group_2.OfferCustomer
-{
+﻿namespace DTO.Models.Order { 
     public class CreateOrderModel
     {
         

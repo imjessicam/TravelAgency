@@ -1,4 +1,4 @@
-﻿using DTO.Models.Group_2.Crew;
+﻿using DTO.Models.Crew;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Models;

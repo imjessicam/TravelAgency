@@ -1,5 +1,5 @@
-﻿using DAO.Group_1;
-using DTO.Models.Group_2.Offer;
+﻿using DAO.AllDAO;
+using DTO.Models.Offer;
 using Microsoft.AspNetCore.Mvc;
 using TravelAgency.Repositories;
 

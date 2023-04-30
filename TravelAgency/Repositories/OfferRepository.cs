@@ -1,4 +1,4 @@
-﻿using DTO.Models.Group_2.Offer;
+﻿using DTO.Models.Offer;
 using Microsoft.EntityFrameworkCore;
 using TravelAgency.Data;
 using TravelAgency.Models;

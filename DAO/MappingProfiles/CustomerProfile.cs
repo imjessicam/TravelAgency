@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DTO.Models.Group_1.Customer;
+using DTO.Models.Customer;
 using TravelAgency.Models;
 
 namespace DAO.MappingProfiles

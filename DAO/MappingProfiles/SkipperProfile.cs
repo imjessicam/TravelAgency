@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DTO.Models.Group_1.Skipper;
+using DTO.Models.Skipper;
 using TravelAgency.Models;
 
 namespace DAO.MappingProfiles

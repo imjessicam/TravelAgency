@@ -1,4 +1,4 @@
-﻿namespace DTO.Models.Group_1.Fleet
+﻿namespace DTO.Models.Fleet
 {
     public class CreateFleetModel
     {

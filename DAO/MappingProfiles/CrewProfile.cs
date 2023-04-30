@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DTO.Models.Group_2.Crew;
+using DTO.Models.Crew;
 using TravelAgency.Models;
 
 namespace DAO.MappingProfiles
@@ -11,7 +11,6 @@ namespace DAO.MappingProfiles
             // Defining of mapping
             CreateMap<Crew, CrewDetails>();
             CreateMap<Crew, CrewBasicInfo>();
-
 
             // Create
             CreateMap<CreateCrewModel, Crew>();
